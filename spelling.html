@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Jade Spelling — Full List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#fdf6ec;
+    --bg-soft:#fffdf8;
+    --card:#ffffff;
+    --ink:#26324a;
+    --ink-soft:#5a6a86;
+    --line:#f0dfc8;
+    --blue:#1f6fb4;
+    --blue-deep:#185a94;
+    --teal:#0e9594;
+    --coral:#f2765c;
+    --sun:#ffb52e;
+    --green:#3da35d;
+    --pink:#ef7ba8;
+    --chip:#fdf0dc;
+    --shadow:0 3px 0 rgba(38,50,74,.08), 0 10px 24px rgba(38,50,74,.07);
+    --radius:18px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#171d2b;
+      --bg-soft:#1d2537;
+      --card:#232d44;
+      --ink:#eef2fb;
+      --ink-soft:#aebad2;
+      --line:#33405e;
+      --blue:#5ea8e6;
+      --blue-deep:#8fc6f2;
+      --teal:#3ec6c5;
+      --coral:#ff9a82;
+      --sun:#ffc95e;
+      --green:#6fce8d;
+      --pink:#ff9ec2;
+      --chip:#2b3852;
+      --shadow:0 3px 0 rgba(0,0,0,.25), 0 10px 24px rgba(0,0,0,.3);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{transition:none !important; animation:none !important}
+  }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  button, select, input{font:inherit; min-height:44px}
+  button{cursor:pointer}
+
+  .wrap{max-width:1080px; margin:0 auto; padding:20px 16px 56px}
+
+  /* ---------- Header ---------- */
+  header.hero{
+    background:var(--blue);
+    border-radius:26px;
+    padding:26px 24px 22px;
+    color:#fff;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"Aa Bb Cc";
+    position:absolute; right:14px; top:8px;
+    font-family:"Fredoka",sans-serif; font-weight:700;
+    font-size:15px; letter-spacing:.35em;
+    color:rgba(255,255,255,.35);
+  }
+  .hero h1{
+    font-family:"Fredoka",sans-serif;
+    font-size:clamp(28px, 5.4vw, 42px);
+    font-weight:700; line-height:1.08; margin:0 0 6px;
+  }
+  .hero p.lede{margin:0; font-size:clamp(15px,2.6vw,18px); font-weight:700; color:#dcefff; max-width:34em}
+  .hero-stats{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px}
+  .hero-stats span{
+    background:rgba(255,255,255,.16);
+    border:2px solid rgba(255,255,255,.35);
+    border-radius:999px; padding:6px 14px;
+    font-weight:900; font-size:14px;
+  }
+  .hero-stats span b{color:#ffe1a8}
+
+  /* ---------- Parent note ---------- */
+  .parent-note{
+    margin-top:14px;
+    background:var(--bg-soft);
+    border:2px dashed var(--sun);
+    border-radius:var(--radius);
+    padding:12px 16px;
+    font-size:14.5px; line-height:1.55; color:var(--ink-soft); font-weight:700;
+  }
+  .parent-note strong{color:var(--ink)}
+  .parent-note .flag{color:var(--coral); font-weight:900}
+
+  /* ---------- Controls ---------- */
+  .controls{
+    position:sticky; top:0; z-index:20;
+    background:var(--bg);
+    padding:14px 0 10px;
+    margin-top:6px;
+  }
+  .controls-row{display:flex; flex-wrap:wrap; gap:8px; align-items:stretch}
+  .search{
+    flex:1 1 200px; display:flex; align-items:center; gap:8px;
+    background:var(--card); border:2px solid var(--line); border-radius:14px;
+    padding:0 14px;
+  }
+  .search span{font-size:19px}
+  .search input{
+    border:0; outline:0; background:transparent; color:var(--ink);
+    width:100%; font-weight:800; font-size:16px; min-height:42px;
+  }
+  .search input::placeholder{color:var(--ink-soft)}
+  .seg{display:flex; background:var(--card); border:2px solid var(--line); border-radius:14px; padding:3px; gap:3px}
+  .seg button{
+    border:0; background:transparent; color:var(--ink-soft);
+    border-radius:11px; padding:6px 14px; font-weight:900; min-height:38px;
+  }
+  .seg button[aria-pressed="true"]{background:var(--blue); color:#fff}
+  select.date-jump{
+    background:var(--card); border:2px solid var(--line); color:var(--ink);
+    border-radius:14px; padding:6px 10px; font-weight:900; max-width:170px;
+  }
+  .btn{
+    border:2px solid var(--line); background:var(--card); color:var(--ink);
+    border-radius:14px; padding:6px 16px; font-weight:900;
+    display:inline-flex; align-items:center; gap:7px;
+  }
+  .btn.mode-on{background:var(--coral); border-color:var(--coral); color:#fff}
+  .result-line{margin:10px 2px 0; font-size:14px; font-weight:800; color:var(--ink-soft)}
+  .result-line b{color:var(--ink)}
+
+  /* ---------- Date sections ---------- */
+  section.day{margin-top:26px}
+  .day-head{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin:0 2px 12px}
+  .day-head h2{
+    font-family:"Fredoka",sans-serif; font-weight:700;
+    font-size:clamp(22px,4vw,28px); margin:0; color:var(--blue-deep);
+  }
+  .day-head .dow{font-weight:900; color:var(--ink-soft); font-size:15px}
+  .day-head .count{
+    margin-left:auto; background:var(--chip); color:var(--ink);
+    border-radius:999px; padding:3px 12px; font-size:13px; font-weight:900;
+  }
+  .grid{
+    display:grid; gap:12px;
+    grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
+  }
+  @media (min-width:760px){
+    .grid{grid-template-columns:repeat(auto-fill, minmax(172px, 1fr)); gap:14px}
+  }
+
+  /* ---------- Word card ---------- */
+  .card{
+    background:var(--card);
+    border:2px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:14px 10px 12px;
+    text-align:center;
+    position:relative;
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+  }
+  .card .date-badge{
+    position:absolute; top:8px; right:8px;
+    background:var(--chip); color:var(--ink-soft);
+    font-size:11.5px; font-weight:900;
+    border-radius:999px; padding:2px 8px;
+  }
+  .card .pic{
+    height:74px; display:flex; align-items:center; justify-content:center;
+    font-size:56px; line-height:1; margin-top:8px;
+    user-select:none;
+  }
+  .card .pic svg{height:70px; width:auto}
+  .card .pic .glyph{
+    font-family:"Fredoka",sans-serif; font-weight:700; color:var(--teal);
+  }
+  .numbadge{
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:64px; height:64px; padding:0 10px;
+    border-radius:20px;
+    background:var(--sun); color:#4a3200;
+    font-family:"Fredoka",sans-serif; font-weight:700; font-size:34px;
+    border:3px solid rgba(0,0,0,.08);
+  }
+  .card .word{
+    font-family:"Fredoka",sans-serif; font-weight:600;
+    font-size:clamp(19px, 2.4vw, 23px); line-height:1.15;
+    color:var(--ink); overflow-wrap:anywhere;
+  }
+  .card .pair-note{font-size:12.5px; font-weight:800; color:var(--ink-soft); margin-top:-3px}
+  .boxes{display:none; flex-wrap:wrap; justify-content:center; gap:4px; margin-top:2px; max-width:100%}
+  .boxes .grp{display:flex; gap:3px}
+  .boxes .grp + .grp{margin-left:9px}
+  .boxes i{
+    width:17px; height:22px; border:2.5px solid var(--blue);
+    border-radius:5px; display:block; background:var(--bg-soft);
+  }
+  .peek-btn{
+    display:none; margin-top:2px;
+    border:0; border-radius:999px; min-height:36px;
+    background:var(--chip); color:var(--ink);
+    font-weight:900; font-size:13.5px; padding:5px 16px;
+  }
+
+  /* Speaker button — tap to hear the word */
+  .speak-btn{
+    position:absolute; top:6px; left:6px;
+    width:42px; height:42px; min-height:42px; padding:0;
+    display:inline-flex; align-items:center; justify-content:center;
+    border:2px solid var(--line); border-radius:50%;
+    background:var(--chip); color:var(--blue-deep);
+  }
+  .speak-btn svg{width:22px; height:22px; display:block}
+  .speak-btn:active{background:var(--sun); border-color:var(--sun); color:#4a3200}
+  .card.speaking{border-color:var(--sun)}
+  .card.speaking .speak-btn{background:var(--sun); border-color:var(--sun); color:#4a3200}
+  body.no-tts .speak-btn{display:none}
+
+  /* Hide-the-word mode */
+  body.hide-mode .card .word,
+  body.hide-mode .card .pair-note{visibility:hidden}
+  body.hide-mode .card .boxes{display:flex}
+  body.hide-mode .card .peek-btn{display:inline-block}
+  body.hide-mode .card.peek .word,
+  body.hide-mode .card.peek .pair-note{visibility:visible}
+  body.hide-mode .card.peek{border-color:var(--sun)}
+  body.hide-mode .card.peek .peek-btn{background:var(--sun)}
+
+  .empty{
+    display:none; text-align:center; padding:44px 16px;
+    font-weight:800; color:var(--ink-soft); font-size:17px;
+  }
+  .empty .big{font-size:44px; display:block; margin-bottom:8px}
+
+  footer{margin-top:40px; text-align:center; color:var(--ink-soft); font-weight:700; font-size:14px; line-height:1.6}
+
+  /* ---------- Lock screen (password gate) ---------- */
+  body.locked .wrap{display:none}
+  .lock{
+    min-height:100svh;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px 16px;
+  }
+  body:not(.locked) .lock{display:none}
+  .lock-card{
+    background:var(--card);
+    border:2px solid var(--line);
+    border-radius:26px;
+    box-shadow:var(--shadow);
+    padding:34px 26px 28px;
+    max-width:400px; width:100%;
+    text-align:center;
+  }
+  .lock-card .lock-icon{font-size:52px; line-height:1; display:block; margin-bottom:10px}
+  .lock-card h1{
+    font-family:"Fredoka",sans-serif; font-weight:700;
+    font-size:clamp(26px,6vw,32px); line-height:1.1; margin:0 0 8px;
+    color:var(--blue-deep);
+  }
+  .lock-card p{margin:0 0 20px; font-weight:700; color:var(--ink-soft); font-size:15.5px; line-height:1.5}
+  .lock-form{display:flex; flex-direction:column; gap:10px}
+  .lock-form label{font-weight:900; font-size:14px; text-align:left; color:var(--ink)}
+  .lock-form input{
+    border:2px solid var(--line); border-radius:14px;
+    background:var(--bg-soft); color:var(--ink);
+    padding:10px 14px; font-weight:800; font-size:20px;
+    text-align:center; letter-spacing:.35em; width:100%;
+    outline:none;
+  }
+  .lock-form input:focus{border-color:var(--blue)}
+  .lock-form button{
+    border:0; border-radius:14px;
+    background:var(--blue); color:#fff;
+    font-family:"Fredoka",sans-serif; font-weight:600; font-size:19px;
+    padding:10px 16px; min-height:52px;
+  }
+  .lock-form button:active{background:var(--blue-deep)}
+  .lock-error{
+    display:none; margin:2px 0 0;
+    color:var(--coral); font-weight:900; font-size:14.5px;
+  }
+  .lock-error.show{display:block}
+  @keyframes lockshake{
+    0%,100%{transform:translateX(0)}
+    20%{transform:translateX(-7px)}
+    40%{transform:translateX(7px)}
+    60%{transform:translateX(-5px)}
+    80%{transform:translateX(5px)}
+  }
+  .lock-card.shake{animation:lockshake .4s ease}
+
+  /* ---------- Print ---------- */
+  @media print{
+    .controls, .peek-btn, .speak-btn, .parent-note .no-print{display:none !important}
+    body{background:#fff}
+    body.hide-mode .card .word, body.hide-mode .card .pair-note{visibility:visible !important}
+    body.hide-mode .card .boxes{display:none !important}
+    .wrap{max-width:none; padding:0}
+    header.hero{background:#1f6fb4 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .card{box-shadow:none; break-inside:avoid}
+    section.day{break-inside:avoid-page}
+    .grid{grid-template-columns:repeat(4, 1fr)}
+  }
+</style>
+</head>
+<body class="locked">
+<div class="lock" id="lockScreen">
+  <div class="lock-card" id="lockCard">
+    <span class="lock-icon" aria-hidden="true">🔒</span>
+    <h1>Jade's Spelling Words</h1>
+    <p>This page is for Jade's family.<br />Type the password to open the word list.</p>
+    <form class="lock-form" id="lockForm" autocomplete="off">
+      <label for="pwInput">Password</label>
+      <input id="pwInput" type="password" inputmode="numeric" autocomplete="off" aria-describedby="lockError" />
+      <p class="lock-error" id="lockError" role="alert">That's not it — please try again.</p>
+      <button type="submit">Open the words 🌟</button>
+    </form>
+  </div>
+</div>
+<div class="wrap">
+
+  <header class="hero">
+    <h1>Jade's Spelling Words 🌟</h1>
+    <p class="lede">Every spelling word from September to November — with a picture for each one. Look, say it, spell it!</p>
+    <div class="hero-stats">
+      <span><b>121</b> word cards</span>
+      <span><b>34</b> school days</span>
+      <span>14 Sep – 11 Nov 2026</span>
+    </div>
+  </header>
+
+  <div class="parent-note" role="note">
+    <strong>For parents:</strong> cards are grouped by the day each word was given, and every card carries its date.
+    Two things from the original list to check: the 10/11 word is printed as <span class="flag">“status”</span> (shown with a statue picture — it may be <em>statue</em>), and the group written “26/20” is filed under <strong>26/10</strong>.
+    <span class="no-print">Tap the <strong>speaker button</strong> on any card to hear the word read aloud — it works in <strong>Hide the words</strong> mode too, so Jade can listen, spell, then tap <strong>Peek</strong> to check.</span>
+  </div>
+
+  <div class="controls">
+    <div class="controls-row">
+      <label class="search"><span aria-hidden="true">🔍</span>
+        <input id="q" type="search" placeholder="Find a word… e.g. elephant" aria-label="Search words" />
+      </label>
+      <div class="seg" role="group" aria-label="Filter by month">
+        <button type="button" data-month="all" aria-pressed="true">All</button>
+        <button type="button" data-month="sep" aria-pressed="false">Sep</button>
+        <button type="button" data-month="oct" aria-pressed="false">Oct</button>
+        <button type="button" data-month="nov" aria-pressed="false">Nov</button>
+      </div>
+      <select class="date-jump" id="dateJump" aria-label="Jump to a date">
+        <option value="all">All dates</option>
+      </select>
+      <button type="button" class="btn" id="modeBtn" aria-pressed="false">🙈 Hide the words</button>
+    </div>
+    <p class="result-line" id="resultLine"></p>
+  </div>
+
+  <main id="list"></main>
+
+  <div class="empty" id="emptyState">
+    <span class="big">🔎</span>
+    No words match that search. Try another word!
+  </div>
+
+  <footer>
+    Jade's English spelling · Full revision list, 14 September – 11 November 2026<br />
+    Words marked with a pair (like leaf / leaves) share one card.
+  </footer>
+</div>
+
+<script>
+/* Data: [date, month, weekday, word shown, spell-word for letter boxes, pair note, icon]
+   icon: emoji text | "num:11" number badge | "svg:..." inline drawing | "glyph:♚" */
+var DATA = [
+  /* ---------- September ---------- */
+  ["14/9","sep","Monday","book","book","","📖"],
+  ["14/9","sep","Monday","Ruler","Ruler","","📏"],
+  ["14/9","sep","Monday","Rubber","Rubber","","svg:eraser"],
+  ["15/9","sep","Tuesday","glue stick","glue stick","","svg:glue"],
+  ["15/9","sep","Tuesday","pencils case","pencils case","","svg:pcase"],
+  ["16/9","sep","Wednesday","Crayon","Crayon","","🖍️"],
+  ["16/9","sep","Wednesday","Paper clip","Paper clip","","📎"],
+  ["16/9","sep","Wednesday","Shelf","Shelf","","svg:shelf"],
+  ["17/9","sep","Thursday","one","one","","1️⃣"],
+  ["17/9","sep","Thursday","two","two","","2️⃣"],
+  ["17/9","sep","Thursday","three","three","","3️⃣"],
+  ["17/9","sep","Thursday","four","four","","4️⃣"],
+  ["17/9","sep","Thursday","five","five","","5️⃣"],
+  ["17/9","sep","Thursday","six","six","","6️⃣"],
+  ["17/9","sep","Thursday","seven","seven","","7️⃣"],
+  ["17/9","sep","Thursday","eight","eight","","8️⃣"],
+  ["17/9","sep","Thursday","nine","nine","","9️⃣"],
+  ["17/9","sep","Thursday","ten","ten","","🔟"],
+  ["18/9","sep","Friday","Eleven","Eleven","","num:11"],
+  ["18/9","sep","Friday","twelve","twelve","","num:12"],
+  ["18/9","sep","Friday","thirteen","thirteen","","num:13"],
+  ["18/9","sep","Friday","fourteen","fourteen","","num:14"],
+  ["18/9","sep","Friday","fifteen","fifteen","","num:15"],
+  ["21/9","sep","Monday","Sixteen","Sixteen","","num:16"],
+  ["21/9","sep","Monday","seventeen","seventeen","","num:17"],
+  ["21/9","sep","Monday","eighteen","eighteen","","num:18"],
+  ["21/9","sep","Monday","nineteen","nineteen","","num:19"],
+  ["22/9","sep","Tuesday","Twenty","Twenty","","num:20"],
+  ["22/9","sep","Tuesday","Thirty","Thirty","","num:30"],
+  ["22/9","sep","Tuesday","Forty","Forty","","num:40"],
+  ["23/9","sep","Wednesday","Fifty","Fifty","","num:50"],
+  ["23/9","sep","Wednesday","sixty","sixty","","num:60"],
+  ["23/9","sep","Wednesday","Seventy","Seventy","","num:70"],
+  ["24/9","sep","Thursday","Eighty","Eighty","","num:80"],
+  ["24/9","sep","Thursday","Ninety","Ninety","","num:90"],
+  ["24/9","sep","Thursday","Hundred","Hundred","","num:100"],
+  ["25/9","sep","Friday","Dog","Dog","","🐶"],
+  ["25/9","sep","Friday","rabbit","rabbit","","🐰"],
+  ["25/9","sep","Friday","lion","lion","","🦁"],
+  ["28/9","sep","Monday","elephant / elephants","elephant","singular → plural (+s)","🐘"],
+  ["28/9","sep","Monday","zebra / zebras","zebra","singular → plural (+s)","🦓"],
+  ["28/9","sep","Monday","bus / buses","bus","singular → plural (+es)","🚌"],
+  ["29/9","sep","Tuesday","watch / watches","watch","singular → plural (+es)","⌚"],
+  ["29/9","sep","Tuesday","torch / torches","torch","singular → plural (+es)","🔦"],
+  ["29/9","sep","Tuesday","box / boxes","box","singular → plural (+es)","📦"],
+
+  /* ---------- October ---------- */
+  ["2/10","oct","Friday","Glasses","Glasses","","👓"],
+  ["2/10","oct","Friday","Brushes","Brushes","","🖌️"],
+  ["2/10","oct","Friday","Dishes","Dishes","","🍽️"],
+  ["5/10","oct","Monday","leaf / leaves","leaf","one leaf → two leaves","🍃"],
+  ["5/10","oct","Monday","knife / knives","knife","one knife → two knives","🔪"],
+  ["5/10","oct","Monday","strawberry / strawberries","strawberry","one → many (-y → -ies)","🍓"],
+  ["5/10","oct","Monday","child / children","child","one child → two children","🧒"],
+  ["5/10","oct","Monday","butterfly / butterflies","butterfly","one → many (-y → -ies)","🦋"],
+  ["5/10","oct","Monday","cherry / cherries","cherry","one → many (-y → -ies)","🍒"],
+  ["13/10","oct","Tuesday","Prince","Prince","","🤴"],
+  ["13/10","oct","Tuesday","Princess","Princess","","👸"],
+  ["13/10","oct","Tuesday","King","King","","glyph:♚"],
+  ["13/10","oct","Tuesday","Queen","Queen","","glyph:♛"],
+  ["14/10","oct","Wednesday","castle","castle","","🏰"],
+  ["14/10","oct","Wednesday","city","city","","🌆"],
+  ["14/10","oct","Wednesday","forest","forest","","🌲"],
+  ["15/10","oct","Thursday","Pointed","Pointed","","svg:pointed"],
+  ["15/10","oct","Thursday","Pointy","Pointy","","🦔"],
+  ["15/10","oct","Thursday","Round","Round","","svg:round"],
+  ["15/10","oct","Thursday","Chin","Chin","","svg:chin"],
+  ["20/10","oct","Tuesday","curly","curly","","➰"],
+  ["20/10","oct","Tuesday","straight","straight","","svg:straight"],
+  ["20/10","oct","Tuesday","fat","fat","","🐷"],
+  ["20/10","oct","Tuesday","thin","thin","","🥢"],
+  ["21/10","oct","Wednesday","ox / oxen","ox","one ox → two oxen","🐂"],
+  ["21/10","oct","Wednesday","person / people","person","one person → two people","🧑"],
+  ["22/10","oct","Thursday","foot / feet","foot","one foot → two feet","🦶"],
+  ["22/10","oct","Thursday","tooth / teeth","tooth","one tooth → two teeth","🦷"],
+  ["23/10","oct","Friday","mouse / mice","mouse","one mouse → two mice","🐭"],
+  ["23/10","oct","Friday","goose / geese","goose","one goose → two geese","🪿"],
+  ["26/10","oct","Monday","Tiger","Tiger","","🐯"],
+  ["26/10","oct","Monday","monkey","monkey","","🐵"],
+  ["26/10","oct","Monday","deer","deer","","🦌"],
+  ["26/10","oct","Monday","sheep","sheep","","🐑"],
+  ["27/10","oct","Tuesday","apple s","apple s","","🍎"],
+  ["27/10","oct","Tuesday","Ball s","Ball s","","⚽"],
+  ["27/10","oct","Tuesday","banana s","banana s","","🍌"],
+  ["27/10","oct","Tuesday","bell s","bell s","","🔔"],
+  ["28/10","oct","Wednesday","car s","car s","","🚗"],
+  ["28/10","oct","Wednesday","house s","house s","","🏠"],
+  ["28/10","oct","Wednesday","snake s","snake s","","🐍"],
+  ["28/10","oct","Wednesday","sausage s","sausage s","","🌭"],
+  ["29/10","oct","Thursday","pizza","pizza","","🍕"],
+  ["29/10","oct","Thursday","sweets","sweets","","🍬"],
+  ["29/10","oct","Thursday","crisp","crisp","","🥔"],
+  ["29/10","oct","Thursday","juice","juice","","🧃"],
+  ["30/10","oct","Friday","party hat s","party hat s","","🥳"],
+  ["30/10","oct","Friday","streamers","streamers","","🎊"],
+  ["30/10","oct","Friday","birthday cakes","birthday cakes","","🎂"],
+
+  /* ---------- November ---------- */
+  ["2/11","nov","Monday","Fizzy","Fizzy","","🥤"],
+  ["2/11","nov","Monday","Drinks","Drinks","","🧋"],
+  ["2/11","nov","Monday","presents","presents","","🎁"],
+  ["2/11","nov","Monday","candles","candles","","🕯️"],
+  ["3/11","nov","Tuesday","balloons","balloons","","🎈"],
+  ["3/11","nov","Tuesday","Toys","Toys","","🧸"],
+  ["3/11","nov","Tuesday","Friends","Friends","","👯"],
+  ["3/11","nov","Tuesday","songs","songs","","🎶"],
+  ["4/11","nov","Wednesday","star","star","","svg:star"],
+  ["4/11","nov","Wednesday","Heart","Heart","","svg:heart"],
+  ["4/11","nov","Wednesday","Diamond","Diamond","","💎"],
+  ["5/11","nov","Thursday","circle","circle","","svg:circle"],
+  ["5/11","nov","Thursday","round","round","","svg:round2"],
+  ["5/11","nov","Thursday","oval","oval","","svg:oval"],
+  ["5/11","nov","Thursday","square","square","","svg:square"],
+  ["6/11","nov","Friday","rectangle","rectangle","","svg:rect"],
+  ["6/11","nov","Friday","rectangular","rectangular","","svg:rectline"],
+  ["6/11","nov","Friday","triangle","triangle","","svg:tri"],
+  ["6/11","nov","Friday","triangular","triangular","","svg:triline"],
+  ["9/11","nov","Monday","pass the parcel","pass the parcel","","🎁"],
+  ["9/11","nov","Monday","treasure hunt","treasure hunt","","🗺️"],
+  ["10/11","nov","Tuesday","musical chairs","musical chairs","","🪑"],
+  ["10/11","nov","Tuesday","status","status","as written in the list — may be “statue”","🗽"],
+  ["10/11","nov","Tuesday","apple bobbing","apple bobbing","","🍎"],
+  ["11/11","nov","Wednesday","pin","pin","","📌"],
+  ["11/11","nov","Wednesday","tail","tail","","🐈"],
+  ["11/11","nov","Wednesday","Donkeys","Donkeys","","🫏"]
+];
+
+var MONTH_LABEL = { sep:"September 2026", oct:"October 2026", nov:"November 2026" };
+
+function svgIcon(kind){
+  switch(kind){
+    case "eraser": return '<svg viewBox="0 0 100 70" role="img" aria-label="eraser"><g transform="rotate(-12 50 35)"><rect x="14" y="22" width="72" height="28" rx="7" fill="#f48fb1"/><rect x="52" y="22" width="34" height="28" rx="7" fill="#5ea8e6"/><rect x="52" y="22" width="8" height="28" fill="#3d7ab0"/></g></svg>';
+    case "glue": return '<svg viewBox="0 0 60 100" role="img" aria-label="glue stick"><rect x="20" y="6" width="20" height="20" rx="4" fill="#7e57c2"/><rect x="14" y="26" width="32" height="62" rx="8" fill="#ede7f6"/><rect x="14" y="40" width="32" height="20" fill="#ffb52e"/></svg>';
+    case "pcase": return '<svg viewBox="0 0 110 70" role="img" aria-label="pencil case"><rect x="8" y="16" width="94" height="42" rx="14" fill="#3ec6c5"/><rect x="8" y="30" width="94" height="5" fill="#0e9594"/><circle cx="26" cy="32" r="4.5" fill="#26324a"/><rect x="66" y="24" width="7" height="20" rx="3" fill="#ffb52e" transform="rotate(24 70 34)"/><rect x="80" y="24" width="7" height="20" rx="3" fill="#f2765c" transform="rotate(24 84 34)"/></svg>';
+    case "shelf": return '<svg viewBox="0 0 110 80" role="img" aria-label="shelf"><rect x="8" y="60" width="94" height="7" rx="3" fill="#a9743f"/><rect x="16" y="34" width="11" height="26" fill="#f2765c"/><rect x="29" y="28" width="11" height="32" fill="#5ea8e6"/><rect x="42" y="38" width="11" height="22" fill="#3da35d"/><rect x="58" y="44" width="30" height="16" rx="3" fill="#ffb52e"/><rect x="8" y="14" width="94" height="6" rx="3" fill="#a9743f"/></svg>';
+    case "pointed": return '<svg viewBox="0 0 80 90" role="img" aria-label="pointed pencil tip"><path d="M40 4 L64 62 L16 62 Z" fill="#ffcf7d"/><path d="M40 4 L47 24 L33 24 Z" fill="#26324a"/><rect x="16" y="62" width="48" height="12" fill="#f2765c"/></svg>';
+    case "chin": return '<svg viewBox="0 0 90 90" role="img" aria-label="chin"><circle cx="45" cy="45" r="36" fill="#ffd9b3"/><circle cx="33" cy="40" r="3.5" fill="#26324a"/><circle cx="57" cy="40" r="3.5" fill="#26324a"/><path d="M34 56 Q45 64 56 56" stroke="#26324a" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="45" cy="76" rx="10" ry="4.5" fill="#f2765c"/></svg>';
+    case "straight": return '<svg viewBox="0 0 110 50" role="img" aria-label="straight line"><line x1="10" y1="25" x2="100" y2="25" stroke="#0e9594" stroke-width="7" stroke-linecap="round"/><path d="M10 25 l12 -8 v16 Z" fill="#0e9594"/><path d="M100 25 l-12 -8 v16 Z" fill="#0e9594"/></svg>';
+    case "star": return '<svg viewBox="0 0 100 100" role="img" aria-label="star"><path d="M50 6 L62 38 L96 38 L68 58 L78 92 L50 71 L22 92 L32 58 L4 38 L38 38 Z" fill="#ffb52e" stroke="#e08e00" stroke-width="3" stroke-linejoin="round"/></svg>';
+    case "heart": return '<svg viewBox="0 0 100 100" role="img" aria-label="heart"><path d="M50 86 C20 62 8 44 8 29 C8 15 19 6 31 6 C40 6 47 11 50 19 C53 11 60 6 69 6 C81 6 92 15 92 29 C92 44 80 62 50 86 Z" fill="#ef476f"/></svg>';
+    case "circle": return '<svg viewBox="0 0 100 100" role="img" aria-label="circle"><circle cx="50" cy="50" r="42" fill="#f2765c"/></svg>';
+    case "round": return '<svg viewBox="0 0 100 100" role="img" aria-label="round ball"><circle cx="50" cy="50" r="42" fill="#e63946"/><ellipse cx="36" cy="34" rx="13" ry="8" fill="#ff9a9a" transform="rotate(-24 36 34)"/></svg>';
+    case "round2": return '<svg viewBox="0 0 100 100" role="img" aria-label="round"><circle cx="50" cy="50" r="42" fill="#5ea8e6"/><ellipse cx="36" cy="34" rx="13" ry="8" fill="#bfe0f7" transform="rotate(-24 36 34)"/></svg>';
+    case "oval": return '<svg viewBox="0 0 110 90" role="img" aria-label="oval"><ellipse cx="55" cy="45" rx="48" ry="32" fill="#3ec6c5"/></svg>';
+    case "square": return '<svg viewBox="0 0 100 100" role="img" aria-label="square"><rect x="12" y="12" width="76" height="76" rx="6" fill="#3da35d"/></svg>';
+    case "rect": return '<svg viewBox="0 0 120 80" role="img" aria-label="rectangle"><rect x="8" y="14" width="104" height="52" rx="6" fill="#ffb52e"/></svg>';
+    case "rectline": return '<svg viewBox="0 0 120 80" role="img" aria-label="rectangular"><rect x="10" y="16" width="100" height="48" rx="6" fill="none" stroke="#7e57c2" stroke-width="7"/></svg>';
+    case "tri": return '<svg viewBox="0 0 100 90" role="img" aria-label="triangle"><path d="M50 8 L94 80 L6 80 Z" fill="#2fa84f"/></svg>';
+    case "triline": return '<svg viewBox="0 0 100 90" role="img" aria-label="triangular"><path d="M50 10 L92 78 L8 78 Z" fill="none" stroke="#ef7ba8" stroke-width="7" stroke-linejoin="round"/></svg>';
+  }
+  return "";
+}
+
+function picHTML(icon){
+  if(icon.indexOf("num:")===0){
+    return '<span class="numbadge">'+icon.slice(4)+'</span>';
+  }
+  if(icon.indexOf("svg:")===0){
+    return svgIcon(icon.slice(4));
+  }
+  if(icon.indexOf("glyph:")===0){
+    return '<span class="glyph" style="font-size:58px">'+icon.slice(6)+'</span>';
+  }
+  return icon;
+}
+
+var SPEAKER_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor" stroke="none"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.4 5.6a9 9 0 0 1 0 12.8"/></svg>';
+
+/* What the speaker should say for a card:
+   pair cards ("leaf / leaves") read both forms; trailing " s" entries
+   ("apple s") are read as the joined plural ("apples"). */
+function speakTextFor(word){
+  if(word.indexOf(" / ")!==-1) return word.split(" / ").join(", ");
+  if(/ s$/.test(word)) return word.replace(/ s$/, "s");
+  return word;
+}
+
+function boxesHTML(spell){
+  var groups = spell.split(" ");
+  var out = "";
+  for(var g=0; g<groups.length; g++){
+    var letters = groups[g].replace(/[^A-Za-z]/g,"");
+    if(!letters) continue;
+    out += '<span class="grp" aria-hidden="true">';
+    for(var i=0;i<letters.length;i++){ out += "<i></i>"; }
+    out += "</span>";
+  }
+  return out;
+}
+
+/* Group entries by date, preserving order */
+var groups = [];
+var byDate = {};
+DATA.forEach(function(e){
+  if(!byDate[e[0]]){
+    byDate[e[0]] = { date:e[0], month:e[1], dow:e[2], items:[] };
+    groups.push(byDate[e[0]]);
+  }
+  byDate[e[0]].items.push(e);
+});
+
+var listEl = document.getElementById("list");
+var html = "";
+groups.forEach(function(gr){
+  html += '<section class="day" data-month="'+gr.month+'" data-date="'+gr.date+'">';
+  html += '<div class="day-head"><h2>'+gr.date+'</h2><span class="dow">'+gr.dow+' · '+MONTH_LABEL[gr.month]+'</span><span class="count">'+gr.items.length+(gr.items.length===1?" word":" words")+'</span></div>';
+  html += '<div class="grid">';
+  gr.items.forEach(function(e){
+    var word=e[3], spell=e[4], note=e[5], icon=e[6];
+    var speakText = speakTextFor(word);
+    html += '<article class="card" data-word="'+word.toLowerCase().replace(/"/g,"&quot;")+'">'
+      + '<button type="button" class="speak-btn" data-speak="'+speakText.replace(/"/g,"&quot;")+'" aria-label="Listen to the word: '+speakText.replace(/"/g,"&quot;")+'" title="Hear the word">'+SPEAKER_SVG+'</button>'
+      + '<span class="date-badge">'+gr.date+'</span>'
+      + '<div class="pic" aria-hidden="true">'+picHTML(icon)+'</div>'
+      + '<div class="word">'+word+'</div>'
+      + (note ? '<div class="pair-note">'+note+'</div>' : '')
+      + '<div class="boxes">'+boxesHTML(spell)+'</div>'
+      + '<button type="button" class="peek-btn">👀 Peek</button>'
+      + '</article>';
+  });
+  html += '</div></section>';
+});
+listEl.innerHTML = html;
+
+/* Date jump options */
+var dateSel = document.getElementById("dateJump");
+groups.forEach(function(gr){
+  var opt = document.createElement("option");
+  opt.value = gr.date;
+  opt.textContent = gr.date + " (" + gr.dow.slice(0,3) + ")";
+  dateSel.appendChild(opt);
+});
+
+/* Peek buttons + speaker buttons */
+listEl.addEventListener("click", function(ev){
+  if(!ev.target.closest) return;
+  var speakBtn = ev.target.closest(".speak-btn");
+  if(speakBtn){
+    speakWord(speakBtn.getAttribute("data-speak"), speakBtn.closest(".card"));
+    return;
+  }
+  var btn = ev.target.closest(".peek-btn");
+  if(btn){
+    var card = btn.closest(".card");
+    var on = card.classList.toggle("peek");
+    btn.textContent = on ? "🙈 Hide again" : "👀 Peek";
+  }
+});
+
+/* Text-to-speech: read the word aloud with the device's English voice */
+function pickVoice(){
+  var vs = window.speechSynthesis.getVoices();
+  var enGB = null, enAny = null;
+  for(var i=0;i<vs.length;i++){
+    var lang = (vs[i].lang || "").replace("_","-").toLowerCase();
+    if(lang.indexOf("en")===0){
+      if(!enAny) enAny = vs[i];
+      if(lang==="en-gb" && !enGB) enGB = vs[i];
+    }
+  }
+  return enGB || enAny || null;
+}
+if("speechSynthesis" in window && window.speechSynthesis.onvoiceschanged !== undefined){
+  window.speechSynthesis.onvoiceschanged = function(){ pickVoice(); };
+}
+function speakWord(text, card){
+  if(!text || !("speechSynthesis" in window)) return;
+  var synth = window.speechSynthesis;
+  synth.cancel();
+  document.querySelectorAll(".card.speaking").forEach(function(c){ c.classList.remove("speaking"); });
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-GB";
+  var v = pickVoice();
+  if(v) u.voice = v;
+  u.rate = 0.85;
+  u.pitch = 1;
+  if(card){
+    card.classList.add("speaking");
+    u.onend = u.onerror = function(){ card.classList.remove("speaking"); };
+  }
+  synth.speak(u);
+}
+if(!("speechSynthesis" in window)){
+  document.body.classList.add("no-tts");
+}
+
+/* Filters */
+var state = { month:"all", date:"all", q:"" };
+var resultLine = document.getElementById("resultLine");
+var emptyState = document.getElementById("emptyState");
+
+function applyFilters(){
+  var shownCards = 0;
+  groups.forEach(function(gr){
+    var sec = listEl.querySelector('section[data-date="'+gr.date+'"]');
+    var secShown = 0;
+    var dateOk = (state.date==="all" || state.date===gr.date);
+    var monthOk = (state.month==="all" || state.month===gr.month);
+    gr.items.forEach(function(e, idx){
+      var card = sec.querySelectorAll(".card")[idx];
+      var qOk = !state.q || e[3].toLowerCase().indexOf(state.q)!==-1 || e[4].toLowerCase().indexOf(state.q)!==-1;
+      var show = dateOk && monthOk && qOk;
+      card.style.display = show ? "" : "none";
+      if(show) secShown++;
+    });
+    sec.style.display = secShown ? "" : "none";
+    shownCards += secShown;
+  });
+  emptyState.style.display = shownCards ? "none" : "block";
+  if(state.month==="all" && state.date==="all" && !state.q){
+    resultLine.innerHTML = "Showing all <b>121 word cards</b> · 34 days";
+  } else {
+    resultLine.innerHTML = "Showing <b>"+shownCards+"</b> of 121 word cards";
+  }
+}
+
+document.querySelectorAll(".seg button").forEach(function(b){
+  b.addEventListener("click", function(){
+    document.querySelectorAll(".seg button").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
+    b.setAttribute("aria-pressed","true");
+    state.month = b.getAttribute("data-month");
+    applyFilters();
+  });
+});
+dateSel.addEventListener("change", function(){ state.date = dateSel.value; applyFilters(); });
+document.getElementById("q").addEventListener("input", function(ev){
+  state.q = ev.target.value.trim().toLowerCase();
+  applyFilters();
+});
+
+/* Hide-the-words mode */
+var modeBtn = document.getElementById("modeBtn");
+modeBtn.addEventListener("click", function(){
+  var on = document.body.classList.toggle("hide-mode");
+  modeBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  modeBtn.classList.toggle("mode-on", on);
+  modeBtn.textContent = on ? "👀 Show the words" : "🙈 Hide the words";
+  if(!on){
+    document.querySelectorAll(".card.peek").forEach(function(c){ c.classList.remove("peek"); });
+    document.querySelectorAll(".peek-btn").forEach(function(b){ b.textContent = "👀 Peek"; });
+  }
+});
+
+/* Password gate — simple page lock only (in-memory; reload asks again) */
+var lockForm = document.getElementById("lockForm");
+var pwInput = document.getElementById("pwInput");
+var lockError = document.getElementById("lockError");
+var lockCard = document.getElementById("lockCard");
+lockForm.addEventListener("submit", function(ev){
+  ev.preventDefault();
+  if(pwInput.value === "0407"){
+    document.body.classList.remove("locked");
+    lockError.classList.remove("show");
+  } else {
+    lockError.classList.add("show");
+    lockCard.classList.remove("shake");
+    void lockCard.offsetWidth;
+    lockCard.classList.add("shake");
+    pwInput.value = "";
+    pwInput.focus();
+  }
+});
+pwInput.focus();
+
+applyFilters();
+</script>
+</body>
+</html>
