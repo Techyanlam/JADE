@@ -220,6 +220,26 @@
     background:var(--chip); color:var(--ink);
     font-weight:900; font-size:13.5px; padding:5px 16px;
   }
+  /* Typing in Hide-the-words mode: Jade types the word, then checks it */
+  .type-row{display:none; flex-direction:column; align-items:center; gap:6px; margin-top:4px; width:100%}
+  .type-row input{
+    width:100%; max-width:170px;
+    border:2px solid var(--blue); border-radius:10px;
+    background:var(--bg-soft); color:var(--ink);
+    padding:6px 10px; font-weight:800; font-size:17px; text-align:center;
+    outline:none; min-height:42px;
+  }
+  .type-row input:focus{border-color:var(--sun)}
+  .check-btn{
+    border:0; border-radius:999px; min-height:36px;
+    background:var(--blue); color:#fff;
+    font-weight:900; font-size:13.5px; padding:5px 18px;
+  }
+  .type-result{font-weight:900; font-size:14px; min-height:19px}
+  .type-result.good{color:var(--green)}
+  .type-result.bad{color:var(--coral)}
+  .card.correct{border-color:var(--green)}
+  .card.correct .type-result{color:var(--green)}
 
   /* Speaker button — tap to hear the word */
   .speak-btn{
@@ -240,6 +260,7 @@
   body.hide-mode .card .pair-note{visibility:hidden}
   body.hide-mode .card .boxes{display:flex}
   body.hide-mode .card .peek-btn{display:inline-block}
+  body.hide-mode .card .type-row{display:flex}
   body.hide-mode .card.peek .word,
   body.hide-mode .card.peek .pair-note{visibility:visible}
   body.hide-mode .card.peek{border-color:var(--sun)}
@@ -351,7 +372,7 @@
   <div class="parent-note" role="note">
     <strong>For parents:</strong> cards are grouped by the day each word was given, and every card carries its date.
     Two things from the original list to check: the 10/11 word is printed as <span class="flag">“status”</span> (shown with a statue picture — it may be <em>statue</em>), and the group written “26/20” is filed under <strong>26/10</strong>.
-    <span class="no-print">Tap the <strong>speaker button</strong> on any card to hear the word read aloud — it works in <strong>Hide the words</strong> mode too, so Jade can listen, spell, then tap <strong>Peek</strong> to check.</span>
+    <span class="no-print">Tap the <strong>speaker button</strong> on any card to hear the word read aloud — it works in <strong>Hide the words</strong> mode too, so Jade can listen, spell, then tap <strong>Peek</strong> to check. In Hide mode she can also <strong>type the word</strong> in the box and tap <strong>Check</strong> to see if she got it right.</span>
   </div>
 
   <div class="controls">
@@ -613,6 +634,7 @@ groups.forEach(function(gr){
       + (note ? '<div class="pair-note">'+note+'</div>' : '')
       + '<div class="boxes">'+boxesHTML(spell)+'</div>'
       + '<button type="button" class="peek-btn">👀 Peek</button>'
+      + '<div class="type-row"><input type="text" class="type-input" data-answer="'+spell.replace(/"/g,"&quot;")+'" placeholder="Type it here…" aria-label="Type the spelling" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" /><button type="button" class="check-btn">✅ Check</button><div class="type-result" aria-live="polite"></div></div>'
       + '</article>';
   });
   html += '</div></section>';
@@ -628,9 +650,39 @@ groups.forEach(function(gr){
   dateSel.appendChild(opt);
 });
 
-/* Peek buttons + speaker buttons */
+/* Peek buttons + speaker buttons + spelling check */
+function normSpell(s){
+  return (s || "").toLowerCase().replace(/[^a-z]/g, "");
+}
+function checkSpelling(input){
+  var card = input.closest(".card");
+  var answer = normSpell(input.getAttribute("data-answer"));
+  var typed = normSpell(input.value);
+  var result = card.querySelector(".type-result");
+  if(!typed){
+    result.textContent = "";
+    result.className = "type-result";
+    card.classList.remove("correct");
+    return;
+  }
+  if(typed === answer){
+    result.textContent = "✅ Correct! Well done! 🎉";
+    result.className = "type-result good";
+    card.classList.add("correct");
+  } else {
+    result.textContent = "❌ Not yet — try again!";
+    result.className = "type-result bad";
+    card.classList.remove("correct");
+  }
+}
 listEl.addEventListener("click", function(ev){
   if(!ev.target.closest) return;
+  var checkBtn = ev.target.closest(".check-btn");
+  if(checkBtn){
+    var input = checkBtn.closest(".type-row").querySelector(".type-input");
+    checkSpelling(input);
+    return;
+  }
   var speakBtn = ev.target.closest(".speak-btn");
   if(speakBtn){
     speakWord(speakBtn.getAttribute("data-speak"), speakBtn.closest(".card"));
@@ -725,6 +777,16 @@ document.getElementById("q").addEventListener("input", function(ev){
   applyFilters();
 });
 
+/* Press Enter in a typing box to check it */
+listEl.addEventListener("keydown", function(ev){
+  if(ev.key !== "Enter") return;
+  var input = ev.target.closest ? ev.target.closest(".type-input") : null;
+  if(input){
+    ev.preventDefault();
+    checkSpelling(input);
+  }
+});
+
 /* Hide-the-words mode */
 var modeBtn = document.getElementById("modeBtn");
 modeBtn.addEventListener("click", function(){
@@ -735,6 +797,9 @@ modeBtn.addEventListener("click", function(){
   if(!on){
     document.querySelectorAll(".card.peek").forEach(function(c){ c.classList.remove("peek"); });
     document.querySelectorAll(".peek-btn").forEach(function(b){ b.textContent = "👀 Peek"; });
+    document.querySelectorAll(".type-input").forEach(function(i){ i.value = ""; });
+    document.querySelectorAll(".type-result").forEach(function(r){ r.textContent = ""; r.className = "type-result"; });
+    document.querySelectorAll(".card.correct").forEach(function(c){ c.classList.remove("correct"); });
   }
 });
 
