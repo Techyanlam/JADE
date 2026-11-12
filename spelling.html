@@ -342,9 +342,9 @@
     <h1>Jade's Spelling Words 🌟</h1>
     <p class="lede">Every spelling word from September to November — with a picture for each one. Look, say it, spell it!</p>
     <div class="hero-stats">
-      <span><b>121</b> word cards</span>
-      <span><b>34</b> school days</span>
-      <span>14 Sep – 11 Nov 2026</span>
+      <span><b>125</b> word cards</span>
+      <span><b>35</b> school days</span>
+      <span>14 Sep – 12 Nov 2026</span>
     </div>
   </header>
 
@@ -381,7 +381,7 @@
   </div>
 
   <footer>
-    Jade's English spelling · Full revision list, 14 September – 11 November 2026<br />
+    Jade's English spelling · Full revision list, 14 September – 12 November 2026<br />
     Words marked with a pair (like leaf / leaves) share one card.
   </footer>
 </div>
@@ -515,7 +515,11 @@ var DATA = [
   ["10/11","nov","Tuesday","apple bobbing","apple bobbing","","🍎"],
   ["11/11","nov","Wednesday","pin","pin","","📌"],
   ["11/11","nov","Wednesday","tail","tail","","🐈"],
-  ["11/11","nov","Wednesday","Donkeys","Donkeys","","🫏"]
+  ["11/11","nov","Wednesday","Donkeys","Donkeys","","🫏"],
+  ["12/11","nov","Thursday","brother","brother","","👦"],
+  ["12/11","nov","Thursday","sister","sister","","👧"],
+  ["12/11","nov","Thursday","father","father","","👨"],
+  ["12/11","nov","Thursday","mother","mother","","👩"]
 ];
 
 var MONTH_LABEL = { sep:"September 2026", oct:"October 2026", nov:"November 2026" };
@@ -701,9 +705,9 @@ function applyFilters(){
   });
   emptyState.style.display = shownCards ? "none" : "block";
   if(state.month==="all" && state.date==="all" && !state.q){
-    resultLine.innerHTML = "Showing all <b>121 word cards</b> · 34 days";
+    resultLine.innerHTML = "Showing all <b>125 word cards</b> · 35 days";
   } else {
-    resultLine.innerHTML = "Showing <b>"+shownCards+"</b> of 121 word cards";
+    resultLine.innerHTML = "Showing <b>"+shownCards+"</b> of 125 word cards";
   }
 }
 
