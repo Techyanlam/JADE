@@ -379,6 +379,7 @@ async function openRecord(id){
 function renderDetail(r){
   const wrong = (r.questionChecks||[]).filter(c => c.status === "錯" || c.status === "部分啱");
   const photos = r.photos || [];
+  const driveUrls = (r.note || "").match(/https?:\/\/drive\.google\.com\/file\/d\/[A-Za-z0-9_-]+\/view/g) || [];
   const seededNote = (r.seedPhotoCount > 0 && photos.length === 0)
     ? `<p class="small">📷 相片原本喺 Muse Space 入面，呢度只有文字記錄（${r.seedPhotoCount} 張）。</p>` : "";
   $("#detailBox").innerHTML = `<div class="box">
@@ -391,7 +392,9 @@ function renderDetail(r){
     ${r.note ? `<p><b>備註：</b><br>${linkify(r.note)}</p>` : ""}
     ${seededNote}
     <div class="thumbs">${photos.map((p,i) => isImage(p)
-      ? `<div class="th" data-lb="${i}"><img src="${p.url}" alt="第 ${i+1} 張"></div>`
+      ? (driveUrls[i]
+          ? `<a class="th" href="${esc(driveUrls[i])}" target="_blank" rel="noopener"><img src="${p.url}" alt="第 ${i+1} 張"></a>`
+          : `<div class="th" data-lb="${i}"><img src="${p.url}" alt="第 ${i+1} 張"></div>`)
       : `<div class="th" data-pdf="${i}"><div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:28px">📄</div></div>`).join("")}</div>
     ${(r.questionChecks||[]).length ? `<h3>逐題檢查（${r.questionChecks.length} 題）</h3>` + r.questionChecks.map(checkRow).join("") : `<p class="small">未有逐題檢查。</p>`}
     <div class="row" style="margin-top:14px">
