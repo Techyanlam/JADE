@@ -423,15 +423,25 @@ function checkRow(c){
 let lbPhotos = [], lbIndex = 0, lbScale = 1, lbX = 0, lbY = 0;
 const lbImg = $("#lbImg"), lbStage = $("#lbStage");
 function lbApply(){ lbImg.style.transform = `translate(calc(-50% + ${lbX}px), calc(-50% + ${lbY}px)) scale(${lbScale})`; }
+let lbPushed = false;
 function openLightbox(photos, i){
   lbPhotos = photos.filter(isImage); lbIndex = i;
   if (!lbPhotos.length) return;
   lbScale = 1; lbX = 0; lbY = 0;
   lbImg.src = lbPhotos[lbIndex].url; lbApply();
   $("#lightbox").classList.add("open");
+  // 撳電話 BACK 掣可以閂返相：開燈箱嗰陣推一個歷史記錄，BACK 就彈返佢
+  if (!lbPushed) { try { history.pushState({lb: 1}, ""); lbPushed = true; } catch(e){} }
 }
-function closeLightbox(){ $("#lightbox").classList.remove("open"); }
-$("#lbClose").onclick = closeLightbox;
+function closeLightbox(fromPop){
+  $("#lightbox").classList.remove("open");
+  if (lbPushed && !fromPop) { lbPushed = false; history.back(); }
+  if (fromPop) lbPushed = false;
+}
+$("#lbClose").onclick = () => closeLightbox(false);
+window.addEventListener("popstate", function(){
+  if ($("#lightbox").classList.contains("open")) closeLightbox(true);
+});
 $("#lbReset").onclick = () => { lbScale = 1; lbX = 0; lbY = 0; lbApply(); };
 $("#lbZoomIn").onclick = () => { lbScale = Math.min(5, lbScale + 0.5); lbApply(); };
 $("#lbZoomOut").onclick = () => { lbScale = Math.max(1, lbScale - 0.5); if (lbScale === 1){ lbX = 0; lbY = 0; } lbApply(); };
