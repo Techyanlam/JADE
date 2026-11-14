@@ -475,8 +475,7 @@ lbStage.addEventListener("pointerup", e => { lbPointers.delete(e.pointerId); });
 lbStage.addEventListener("pointercancel", e => { lbPointers.delete(e.pointerId); });
 lbStage.addEventListener("dblclick", () => { lbScale = lbScale === 1 ? 2.5 : 1; if (lbScale === 1){ lbX = 0; lbY = 0; } lbApply(); });
 
-/* ---------- 上載流程 ---------- */
-$("#goUploadBtn").onclick = () => { resetUpload(); showView("uploadView"); };
+/* ---------- 上載流程（主頁上載掣已刪，呢度留返俾以後用） ---------- */
 $("#backHomeBtn1").onclick = () => showView("homeView");
 $("#backHomeBtn2").onclick = () => showView("homeView");
 $("#backHomeBtn3").onclick = () => { if (currentRecord) openRecord(currentRecord.id); else showView("homeView"); };
