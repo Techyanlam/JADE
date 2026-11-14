@@ -220,6 +220,8 @@ const KINDS = ["功課","測驗"];
 const STATUSES = ["啱","錯","部分啱","睇唔清"];
 const $ = s => document.querySelector(s);
 const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+// 備註入面嘅網址變成可撳嘅 link（先 escape 防 XSS，再包 <a>；&amp; 喺 href 入面會還原做 &）
+const linkify = s => esc(s).replace(/https?:\/\/[^\s<>"']+/g, u => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`).replace(/\n/g,"<br>");
 function todayHK(){ return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Hong_Kong",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()); }
 let token = localStorage.getItem("jh_token") || "";
 let records = [];
@@ -386,7 +388,7 @@ function renderDetail(r){
     </div>
     <h2 style="margin-top:8px">${esc(r.topic || "(未填題目)")}</h2>
     ${r.mistakes ? `<p><b>要改嘅地方：</b><br>${esc(r.mistakes).replace(/\n/g,"<br>")}</p>` : ""}
-    ${r.note ? `<p><b>備註：</b><br>${esc(r.note).replace(/\n/g,"<br>")}</p>` : ""}
+    ${r.note ? `<p><b>備註：</b><br>${linkify(r.note)}</p>` : ""}
     ${seededNote}
     <div class="thumbs">${photos.map((p,i) => isImage(p)
       ? `<div class="th" data-lb="${i}"><img src="${p.url}" alt="第 ${i+1} 張"></div>`
