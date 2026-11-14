@@ -347,7 +347,7 @@ function renderHome(){
     uns.map(r => `<div class="urow"><span>${esc(r.recordDate)} · ${esc(r.subject)} · ${esc(r.topic)}</span><button class="btn small" data-sign="${r.id}">簽咗</button></div>`).join("") + `</div>` : "";
   $("#unsignedStrip").querySelectorAll("[data-sign]").forEach(b => b.onclick = () => signRecord(b.dataset.sign));
   // 列表
-  const list = hasFilter ? records.filter(r => (!curSubject || r.subject === curSubject) && (!curKind || r.kind === curKind) && (!curDate || r.recordDate.indexOf(curDate) === 0)) : [];
+  const list = hasFilter ? records.filter(r => (!curSubject || r.subject === curSubject) && (!curKind || r.kind === curKind) && (!curDate || (r.recordDate || "").indexOf(curDate) === 0)) : [];
   $("#list").innerHTML = !hasFilter ? `<div class="empty">👆 撳上面一個科目，或者揀月份，先會顯示記錄。</div>` : (list.length ? list.map(r => {
     const hasPhoto = (r.photoCount || 0) > 0;
     return `<div class="card" data-id="${r.id}">
@@ -795,7 +795,13 @@ function checkEditor(c, i){
 }
 
 /* ---------- 月份篩選 ---------- */
-$("#dateFilter").addEventListener("change", e => { curDate = e.target.value; renderHome(); });
+// 有啲瀏覽器唔支援月份選擇器，會變返普通文字欄；"2026-11"、"2026年11月"、"2026/11" 全部歸一做 "YYYY-MM"
+function normMonth(v){
+  const m = String(v || "").match(/(\d{4})\D*(\d{1,2})/);
+  if (!m) return "";
+  return m[1] + "-" + String(+m[2]).padStart(2, "0");
+}
+$("#dateFilter").addEventListener("change", e => { curDate = normMonth(e.target.value); renderHome(); });
 $("#clearDateBtn").addEventListener("click", () => { curDate = ""; $("#dateFilter").value = ""; renderHome(); });
 
 /* ---------- 啟動 ---------- */
