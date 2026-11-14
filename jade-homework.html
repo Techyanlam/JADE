@@ -146,8 +146,8 @@ textarea{min-height:64px;resize:vertical}
     <div class="chips" id="subjectChips"></div>
     <div class="chips" id="kindChips"></div>
     <div style="display:flex;gap:8px;margin:8px 0">
-      <input type="date" id="dateFilter" style="flex:1" aria-label="按日期篩選">
-      <button class="btn ghost small" id="clearDateBtn" style="flex:0 0 auto">清除日期</button>
+      <input type="month" id="dateFilter" style="flex:1" aria-label="按月份篩選">
+      <button class="btn ghost small" id="clearDateBtn" style="flex:0 0 auto">清除月份</button>
     </div>
     <div id="list"></div>
   </div>
@@ -347,8 +347,8 @@ function renderHome(){
     uns.map(r => `<div class="urow"><span>${esc(r.recordDate)} · ${esc(r.subject)} · ${esc(r.topic)}</span><button class="btn small" data-sign="${r.id}">簽咗</button></div>`).join("") + `</div>` : "";
   $("#unsignedStrip").querySelectorAll("[data-sign]").forEach(b => b.onclick = () => signRecord(b.dataset.sign));
   // 列表
-  const list = hasFilter ? records.filter(r => (!curSubject || r.subject === curSubject) && (!curKind || r.kind === curKind) && (!curDate || r.recordDate === curDate)) : [];
-  $("#list").innerHTML = !hasFilter ? `<div class="empty">👆 撳上面一個科目，或者揀日期，先會顯示記錄。</div>` : (list.length ? list.map(r => {
+  const list = hasFilter ? records.filter(r => (!curSubject || r.subject === curSubject) && (!curKind || r.kind === curKind) && (!curDate || r.recordDate.indexOf(curDate) === 0)) : [];
+  $("#list").innerHTML = !hasFilter ? `<div class="empty">👆 撳上面一個科目，或者揀月份，先會顯示記錄。</div>` : (list.length ? list.map(r => {
     const hasPhoto = (r.photoCount || 0) > 0;
     return `<div class="card" data-id="${r.id}">
       <div class="phwrap" ${hasPhoto ? `data-photo="${r.id}"` : ""} style="background:${SUBJ_COLOR[r.subject]||"#888"}">${esc((r.subject||"")[0]||"功")}</div>
@@ -794,7 +794,7 @@ function checkEditor(c, i){
   </div>`;
 }
 
-/* ---------- 日期篩選 ---------- */
+/* ---------- 月份篩選 ---------- */
 $("#dateFilter").addEventListener("change", e => { curDate = e.target.value; renderHome(); });
 $("#clearDateBtn").addEventListener("click", () => { curDate = ""; $("#dateFilter").value = ""; renderHome(); });
 
