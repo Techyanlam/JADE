@@ -46,6 +46,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;cursor:pointer}
 .card .ph{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#eee}
 .card .phwrap{width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;color:#fff;font-size:64px;font-weight:700}
+.card .phwrap img{width:100%;height:100%;object-fit:cover;display:block}
 .card .body{padding:10px 12px 12px}
 .card .topline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px}
 .card .topline .date{color:var(--muted)}
@@ -300,6 +301,29 @@ function summaryText(r){
   }
   return "未逐題批改";
 }
+/* ---------- 卡片第一張相（碌到先載，唔會一次過拖慢主頁） ---------- */
+const thumbCache = {};
+let thumbObserver = null;
+function loadCardThumbs(){
+  if (thumbObserver) thumbObserver.disconnect();
+  if (!("IntersectionObserver" in window)) return;
+  thumbObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (!en.isIntersecting) return;
+      const el = en.target;
+      thumbObserver.unobserve(el);
+      const id = el.dataset.photo;
+      if (!id) return;
+      if (thumbCache[id]) { el.innerHTML = `<img src="${thumbCache[id]}" alt="功課相">`; return; }
+      api("/api/records/" + encodeURIComponent(id) + "?firstPhoto=1").then(function(res){
+        const rec = res.data && res.data.record;
+        const p = rec && rec.photos && rec.photos[0];
+        if (p && p.url) { thumbCache[id] = p.url; el.innerHTML = `<img src="${p.url}" alt="功課相">`; }
+      }).catch(function(){});
+    });
+  }, { rootMargin: "200px" });
+  document.querySelectorAll("#list .phwrap[data-photo]").forEach(function(el){ thumbObserver.observe(el); });
+}
 function renderHome(){
   $("#countLabel").textContent = records.length + " 份記錄";
   // 科目 chips
@@ -317,9 +341,9 @@ function renderHome(){
   // 列表
   const list = records.filter(r => (!curSubject || r.subject === curSubject) && (!curKind || r.kind === curKind));
   $("#list").innerHTML = list.length ? list.map(r => {
-    const photo = ""; // 相片要開記錄先載（列表只係摘要）
+    const hasPhoto = (r.photoCount || 0) > 0;
     return `<div class="card" data-id="${r.id}">
-      <div class="phwrap" style="background:${SUBJ_COLOR[r.subject]||"#888"}">${esc((r.subject||"")[0]||"功")}</div>
+      <div class="phwrap" ${hasPhoto ? `data-photo="${r.id}"` : ""} style="background:${SUBJ_COLOR[r.subject]||"#888"}">${esc((r.subject||"")[0]||"功")}</div>
       <div class="body">
         <div class="topline"><span class="date">${esc(r.recordDate)}</span>${subjChip(r.subject)}<span class="kindtag">${esc(r.kind)}</span><span class="score">${scoreText(r)}</span></div>
         <div class="topic">${esc(r.topic || "(未填題目)")}</div>
@@ -327,6 +351,7 @@ function renderHome(){
       </div></div>`;
   }).join("") : `<div class="empty">呢度冇記錄。</div>`;
   document.querySelectorAll("#list .card").forEach(c => c.onclick = () => openRecord(c.dataset.id));
+  loadCardThumbs();
 }
 async function signRecord(id){
   try {
