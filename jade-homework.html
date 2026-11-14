@@ -523,7 +523,7 @@ async function runAnalysis(){
     if (status !== 200 || !data.ok){ throw new Error((data && data.error) || "analyze_failed"); }
     await saveAnalyzed(data, runPhotos);
   } catch(e){
-    if (e && e.message === "ai_disabled") setStatus("AI 已停用（唔用公司嗰個），請手動填寫記錄。", "warn");
+    if (e && e.message === "ai_disabled") setStatus("AI 分析未啟用——將功課相 send 俾 Muse，佢對完會同步入嚟；呢度可以手動填寫記錄。", "warn");
     else setStatus("⚠️ AI 分析唔到（" + esc(e.message || "網絡問題") + "），請手動填寫，唔會亂入記錄。", "err");
     $("#manualBtn").classList.remove("hidden");
   } finally { analyzing = false; }
@@ -680,7 +680,7 @@ function renderEdit(rec, photos, prefill){
         if (data.paperDate) r.recordDate = data.paperDate;
         if (data.subject) r.subject = data.subject;
         renderEdit(rec, r.photos);
-      } else alert(data && data.error === "ai_disabled" ? "AI 已停用，請手動填寫。" : "AI 分析唔到。");
+      } else alert(data && data.error === "ai_disabled" ? "AI 分析未啟用，請手動填寫（或將功課相 send 俾 Muse 同步入嚟）。" : "AI 分析唔到。");
     } catch(e){ alert("AI 分析唔到。"); }
     reAI.disabled = false;
   };
