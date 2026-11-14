@@ -144,10 +144,6 @@ textarea{min-height:64px;resize:vertical}
     <div id="unsignedStrip"></div>
     <div class="chips" id="subjectChips"></div>
     <div class="chips" id="kindChips"></div>
-    <div style="display:flex;gap:8px;margin:8px 0">
-      <input type="month" id="dateFilter" style="flex:1" aria-label="按月份篩選">
-      <button class="btn ghost small" id="clearDateBtn" style="flex:0 0 auto">清除月份</button>
-    </div>
     <div id="list"></div>
   </div>
 
@@ -228,7 +224,7 @@ const linkify = s => esc(s).replace(/https?:\/\/[^\s<>"']+/g, u => `<a href="${u
 function todayHK(){ return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Hong_Kong",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()); }
 let token = localStorage.getItem("jh_token") || "";
 let records = [];
-let curSubject = "", curKind = "", curDate = "";
+let curSubject = "", curKind = "";
 let currentRecord = null;   // 完整記錄（詳情／編輯）
 let pendingPhotos = [];     // 上載流程：{url, contentType}
 let analyzeTimer = null, analyzing = false, photosStale = false, uploadGen = 0;
@@ -338,16 +334,16 @@ function renderHome(){
     `<button class="chipbtn ${curKind===k?"on":""}" data-k="${k}">${k===""?"全部種類":k}</button>`).join("");
   $("#subjectChips").querySelectorAll(".chipbtn").forEach(b => b.onclick = () => { curSubject = b.dataset.s; renderHome(); });
   $("#kindChips").querySelectorAll(".chipbtn").forEach(b => b.onclick = () => { curKind = b.dataset.k; renderHome(); });
-  // 未揀科目／種類／日期之前，一條記錄都唔顯示（入嚟快啲）
-  const hasFilter = curSubject !== "" || curKind !== "" || curDate !== "";
+  // 未揀科目／種類之前，一條記錄都唔顯示（入嚟快啲）
+  const hasFilter = curSubject !== "" || curKind !== "";
   // 待簽名（有篩選先顯示）
   const uns = hasFilter ? records.filter(r => r.needsSignature && !r.signed) : [];
   $("#unsignedStrip").innerHTML = uns.length ? `<div class="unsigned"><h3>✍️ 待簽名（${uns.length}）</h3>` +
     uns.map(r => `<div class="urow"><span>${esc(r.recordDate)} · ${esc(r.subject)} · ${esc(r.topic)}</span><button class="btn small" data-sign="${r.id}">簽咗</button></div>`).join("") + `</div>` : "";
   $("#unsignedStrip").querySelectorAll("[data-sign]").forEach(b => b.onclick = () => signRecord(b.dataset.sign));
   // 列表
-  const list = hasFilter ? records.filter(r => (!curSubject || r.subject === curSubject) && (!curKind || r.kind === curKind) && (!curDate || (r.recordDate || "").indexOf(curDate) === 0)) : [];
-  $("#list").innerHTML = !hasFilter ? `<div class="empty">👆 撳上面一個科目，或者揀月份，先會顯示記錄。</div>` : (list.length ? list.map(r => {
+  const list = hasFilter ? records.filter(r => (!curSubject || r.subject === curSubject) && (!curKind || r.kind === curKind)) : [];
+  $("#list").innerHTML = !hasFilter ? `<div class="empty">👆 撳上面一個科目，先會顯示記錄。</div>` : (list.length ? list.map(r => {
     const hasPhoto = (r.photoCount || 0) > 0;
     return `<div class="card" data-id="${r.id}">
       <div class="phwrap" ${hasPhoto ? `data-photo="${r.id}"` : ""} style="background:${SUBJ_COLOR[r.subject]||"#888"}">${esc((r.subject||"")[0]||"功")}</div>
@@ -791,16 +787,6 @@ function checkEditor(c, i){
     <div class="fld"><label>錯咗乜（啱就留空）</label><input type="text" data-f="errorNote" value="${esc(c.errorNote||"")}"></div>
   </div>`;
 }
-
-/* ---------- 月份篩選 ---------- */
-// 有啲瀏覽器唔支援月份選擇器，會變返普通文字欄；"2026-11"、"2026年11月"、"2026/11" 全部歸一做 "YYYY-MM"
-function normMonth(v){
-  const m = String(v || "").match(/(\d{4})\D*(\d{1,2})/);
-  if (!m) return "";
-  return m[1] + "-" + String(+m[2]).padStart(2, "0");
-}
-$("#dateFilter").addEventListener("change", e => { curDate = normMonth(e.target.value); renderHome(); });
-$("#clearDateBtn").addEventListener("click", () => { curDate = ""; $("#dateFilter").value = ""; renderHome(); });
 
 /* ---------- 啟動 ---------- */
 if (token){
