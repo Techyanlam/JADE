@@ -109,6 +109,33 @@ textarea{min-height:64px;resize:vertical}
 #menu button:hover{background:#f5f5f5}
 .hidden{display:none!important}
 .small{font-size:13px;color:var(--muted)}
+
+/* 分析 */
+.an-sec{margin:16px 0}
+.an-sec h3{margin:0 0 8px;font-size:16px}
+.an-table{width:100%;border-collapse:collapse;font-size:14px}
+.an-table th,.an-table td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.an-table th{color:var(--muted);font-weight:600;font-size:13px}
+.an-table .num{text-align:right;white-space:nowrap}
+.an-bar{height:8px;background:#eee;border-radius:99px;overflow:hidden;margin-top:4px}
+.an-bar i{display:block;height:100%;background:var(--red)}
+.wtopic{display:flex;gap:8px;align-items:baseline;padding:9px 0;border-bottom:1px dashed var(--line);cursor:pointer}
+.wtopic:last-child{border-bottom:0}
+.wtopic .t{flex:1}
+.wtopic .err{color:#c0392b;font-weight:700;white-space:nowrap}
+.mockq{padding:10px 0;border-bottom:1px solid var(--line)}
+.mockq .qq{font-size:15px}
+.mockq .write{border-bottom:1px solid #bbb;height:28px;margin-top:6px}
+.mockq .meta{font-size:12px;color:var(--muted)}
+.key{font-size:14px}
+.key li{margin:3px 0}
+@media print{
+  body{background:#fff}
+  body *{visibility:hidden}
+  #mockSheet,#mockSheet *{visibility:visible}
+  #mockSheet{position:absolute;top:0;left:0;width:100%;padding:0}
+  .noprint{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -132,6 +159,7 @@ textarea{min-height:64px;resize:vertical}
   <header>
     <h1>📚 芊穎功課記錄</h1>
     <span class="count" id="countLabel"></span>
+    <button class="btn ghost small" id="analysisBtn">📊 分析</button>
     <button class="iconbtn" id="menuBtn" aria-label="選單">⋯</button>
   </header>
   <div id="menu">
@@ -145,6 +173,12 @@ textarea{min-height:64px;resize:vertical}
     <div class="chips" id="subjectChips"></div>
     <div class="chips" id="kindChips"></div>
     <div id="list"></div>
+  </div>
+
+  <!-- 分析 -->
+  <div id="analysisView" class="view">
+    <button class="btn ghost small" id="backHomeBtn5">← 返主頁</button>
+    <div id="analysisBox"></div>
   </div>
 
   <!-- 上載 / 結果 -->
@@ -786,6 +820,146 @@ function checkEditor(c, i){
     <div class="fld"><label>正確答案</label><input type="text" data-f="correctAnswer" value="${esc(c.correctAnswer||"")}"></div>
     <div class="fld"><label>錯咗乜（啱就留空）</label><input type="text" data-f="errorNote" value="${esc(c.errorNote||"")}"></div>
   </div>`;
+}
+
+
+/* ---------- 分析 ---------- */
+let analysisData = null;
+let mockScope = { subjects: [], from: "", to: "", types: [], count: 10 };
+let mockSheet = [];
+$("#analysisBtn").onclick = () => openAnalysis();
+$("#backHomeBtn5").onclick = () => showView("homeView");
+async function openAnalysis(){
+  showView("analysisView");
+  mockScope = { subjects: [], from: "", to: "", types: [], count: 10 };
+  mockSheet = [];
+  $("#analysisBox").innerHTML = `<div class="box">載入緊分析…</div>`;
+  try {
+    const {status, data} = await api("/api/analysis");
+    if (status !== 200 || !data.ok) throw new Error("load_failed");
+    analysisData = data;
+    renderAnalysis(data);
+  } catch(e){ $("#analysisBox").innerHTML = `<div class="box">載入唔到分析，請返主頁再試。</div>`; }
+}
+function errBar(rate){ return `<div class="an-bar"><i style="width:${Math.min(100, rate)}%"></i></div>`; }
+function renderAnalysis(a){
+  const t = a.totals, s = a.summary;
+  const subjRows = a.bySubject.map(x => {
+    const small = x.checks < 20;
+    return `<tr><td>${subjChip(x.subject)}</td>
+      <td class="num">${x.records}</td><td class="num">${x.checks}</td>
+      <td class="num">${x.wrong + x.partial}<br><span class="small">錯 ${x.wrong} · 部分啱 ${x.partial}</span></td>
+      <td class="num"><b>${x.errorRate}%</b>${errBar(x.errorRate)}${x.avgScorePct != null ? `<br><span class="small">平均分 ${x.avgScorePct}%（${x.scoredPapers} 份計分）</span>` : ""}${small ? `<br><span class="small">題數少，只供參考</span>` : ""}</td></tr>`;
+  }).join("");
+  const patRows = Object.keys(a.patterns).map(k =>
+    `<tr><td>${esc(k)}</td><td class="num">${a.patterns[k]}</td></tr>`).join("");
+  const monthRows = a.byMonth.map(m =>
+    `<tr><td>${esc(m.month)}</td><td class="num">${m.records}</td><td class="num">${m.checks}</td><td class="num">${m.wrong + m.partial}</td><td class="num"><b>${m.errorRate}%</b></td></tr>`).join("");
+  const weakRows = a.weakTopics.map(w =>
+    `<div class="wtopic" data-rec="${w.recordId}"><div class="t"><b>${esc(w.topic)}</b><br><span class="small">${esc(w.subject)} · ${esc(w.recordDate)} · ${w.checks} 題，錯 ${w.wrong} · 部分啱 ${w.partial}</span></div><span class="err">${w.errorRate}%</span></div>`).join("");
+  const typeRows = a.byType.filter(x => x.checks > 0).map(x =>
+    `<tr><td>${esc(x.type)}</td><td class="num">${x.records}</td><td class="num">${x.checks}</td><td class="num">${x.wrong + x.partial}<br><span class="small">錯 ${x.wrong} · 部分啱 ${x.partial}</span></td><td class="num"><b>${x.errorRate}%</b>${errBar(x.errorRate)}</td></tr>`).join("");
+  $("#analysisBox").innerHTML = `
+  <div class="box an-sec"><h2>📊 綜合分析</h2>
+    <p class="small">截至 ${esc(a.generatedAt ? a.generatedAt.slice(0, 10) : "")} · 計數係直接由逐題檢查計出嚟，唔係 AI 估計。</p>
+    <p><b>${t.records} 份功課 · ${t.checks} 題</b><br>
+    啱 <b style="color:#15803d">${t.correct}</b> · 錯 <b style="color:#c0392b">${t.wrong}</b> · 部分啱 <b style="color:#d97706">${t.partial}</b> · 睇唔清 ${t.unclear}<br>
+    整體錯題率 <b>${s.overallErrorRate}%</b>（錯＋部分啱）</p>
+    <p>最弱：<b>${s.weakestSubject ? esc(s.weakestSubject) : "—"}</b>（只計 20 題以上嘅科目）<br>
+    最穩：<b>${s.strongestSubject ? esc(s.strongestSubject) : "—"}</b></p>
+    <p>重點跟進：<b>${(s.focusTopics || []).map(esc).join("、") || "—"}</b></p>
+    <h3>錯因分類（根據錯題備註關鍵字）</h3>
+    <table class="an-table"><tr><th>錯因</th><th class="num">題數</th></tr>${patRows}</table>
+    <h3>按月</h3>
+    <table class="an-table"><tr><th>月份</th><th class="num">份數</th><th class="num">題數</th><th class="num">錯題</th><th class="num">錯題率</th></tr>${monthRows}</table>
+  </div>
+  <div class="box an-sec"><h3>📚 各科分析</h3>
+    <table class="an-table"><tr><th>科目</th><th class="num">份數</th><th class="num">題數</th><th class="num">錯題</th><th class="num">錯題率</th></tr>${subjRows}</table>
+    <p class="small">錯題率按錯＋部分啱計。少過 20 題嘅科目只供參考。</p>
+  </div>
+  <div class="box an-sec"><h3>🎯 弱點總覽</h3>
+    <p class="small">撳一個題目可以直接去嗰份功課。</p>
+    ${weakRows || "<p>暫時冇明顯弱點。</p>"}
+  </div>
+  <div class="box an-sec"><h3>🧩 出題分析（按題型）</h3>
+    <table class="an-table"><tr><th>題型</th><th class="num">份數</th><th class="num">題數</th><th class="num">錯題</th><th class="num">錯題率</th></tr>${typeRows}</table>
+    <p class="small">一份功課可以有多個題型，同一份嘅題數會喺每個題型重複計算，所以上表題數加埋會多過實際總數。</p>
+  </div>
+  <div class="box an-sec"><h3>📝 出模擬試卷</h3>
+    <p class="small">揀範圍，即出練習（用返做錯／部分啱過嘅題目）；想出完整模擬試卷加網上參考，就複製下面段文字 send 俾 Bear。</p>
+    <label class="f">科目（唔揀 = 全部）</label>
+    <div class="chips" id="mockSubjects">${SUBJECTS.map(x => `<button type="button" class="chipbtn" data-ms="${x}"><span class="dot" style="background:${SUBJ_COLOR[x]}"></span>${x}</button>`).join("")}</div>
+    <div class="row">
+      <div><label class="f">由日期</label><input type="date" id="mockFrom"></div>
+      <div><label class="f">至日期</label><input type="date" id="mockTo"></div>
+    </div>
+    <label class="f">題型（唔揀 = 全部；最多顯示 40 個）</label>
+    <div class="chips" id="mockTypes">${a.byType.filter(x => x.checks > 0).slice(0, 40).map(x => `<button type="button" class="chipbtn" data-mt="${esc(x.type)}">${esc(x.type)}</button>`).join("")}</div>
+    <div class="row">
+      <div><label class="f">題數</label><input type="number" id="mockCount" value="10" min="1" max="30"></div>
+      <div style="display:flex;align-items:flex-end"><button class="btn block" id="mockGo">出練習</button></div>
+    </div>
+    <div id="mockResult"></div>
+  </div>`;
+  document.querySelectorAll("#analysisBox .wtopic").forEach(el => el.onclick = () => openRecord(el.dataset.rec));
+  document.querySelectorAll("#mockSubjects .chipbtn").forEach(b => b.onclick = () => {
+    b.classList.toggle("on");
+    mockScope.subjects = [...document.querySelectorAll("#mockSubjects .chipbtn.on")].map(e => e.dataset.ms);
+  });
+  document.querySelectorAll("#mockTypes .chipbtn").forEach(b => b.onclick = () => {
+    b.classList.toggle("on");
+    mockScope.types = [...document.querySelectorAll("#mockTypes .chipbtn.on")].map(e => e.dataset.mt);
+  });
+  $("#mockGo").onclick = buildMockSheet;
+}
+function mockFiltered(){
+  const a = analysisData;
+  mockScope.from = $("#mockFrom").value; mockScope.to = $("#mockTo").value;
+  mockScope.count = Math.max(1, Math.min(30, +$("#mockCount").value || 10));
+  return (a.weakQuestions || []).filter(q => {
+    if (mockScope.subjects.length && !mockScope.subjects.includes(q.subject)) return false;
+    if (mockScope.from && q.recordDate < mockScope.from) return false;
+    if (mockScope.to && q.recordDate > mockScope.to) return false;
+    if (mockScope.types.length && !(q.types || []).some(t => mockScope.types.includes(t))) return false;
+    return true;
+  });
+}
+function buildMockSheet(){
+  const list = mockFiltered();
+  const box = $("#mockResult");
+  if (!list.length){ box.innerHTML = `<p class="status warn">呢個範圍冇錯過嘅題目。試下放寬科目、日期或者題型。</p>`; return; }
+  const pool = list.slice();
+  for (let i = pool.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); const tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp; }
+  mockSheet = pool.slice(0, mockScope.count);
+  const scopeText = "請出模擬試卷：科目：" + (mockScope.subjects.length ? mockScope.subjects.join("、") : "全部科目") +
+    "；日期：" + (mockScope.from || mockScope.to ? (mockScope.from || "最早") + " 至 " + (mockScope.to || "最新") : "全部") +
+    "；題型：" + (mockScope.types.length ? mockScope.types.join("、") : "全部題型") +
+    "；題數：" + mockScope.count + " 題；加入上網參考。";
+  box.innerHTML = `<div id="mockSheet">
+    <h3>模擬練習（${mockSheet.length} 題 · 根據做錯過嘅題目出）</h3>
+    <p class="small">範圍：${esc(mockScope.subjects.length ? mockScope.subjects.join("、") : "全部科目")}${mockScope.from || mockScope.to ? " · " + esc(mockScope.from || "最早") + " 至 " + esc(mockScope.to || "最新") : ""}${mockScope.types.length ? " · " + esc(mockScope.types.join("、")) : ""}</p>
+    ${mockSheet.map((q, i) => {
+      const listen = /聆聽|聽老師|手號/.test(q.question || "") ? ` <span class="small">（聆聽題：請家長讀出）</span>` : "";
+      return `<div class="mockq"><div class="meta">第 ${i + 1} 題 · ${esc(q.subject)} · ${esc(q.topic)}（${esc(q.recordDate)}）${q.label ? " · " + esc(q.label) : ""}</div>
+      <div class="qq">${esc(q.question || "(題目唔詳，見原功課)")}${listen}</div>
+      <div class="write"></div></div>`;
+    }).join("")}
+    <h3 style="margin-top:14px">答案</h3>
+    <ol class="key">${mockSheet.map(q => `<li>${esc(q.correctAnswer || "—")}${q.errorNote ? `（${esc(q.errorNote)}）` : ""}</li>`).join("")}</ol>
+  </div>
+  <div class="row noprint" style="margin-top:12px">
+    <button class="btn" id="mockPrint">🖨️ 列印</button>
+    <button class="btn ghost" id="mockCopy">📋 複製出卷要求</button>
+  </div>
+  <label class="f noprint">出完整模擬試卷（加網上參考）— 複製呢段文字 send 俾 Bear：</label>
+  <textarea class="noprint" id="mockReq" readonly rows="3">${esc(scopeText)}</textarea>
+  <p class="small noprint" id="mockCopyMsg"></p>`;
+  $("#mockPrint").onclick = () => window.print();
+  $("#mockCopy").onclick = async () => {
+    const txt = $("#mockReq").value;
+    try { await navigator.clipboard.writeText(txt); $("#mockCopyMsg").textContent = "已經複製，去搵 Bear send 啦。"; }
+    catch(e){ $("#mockReq").select(); document.execCommand("copy"); $("#mockCopyMsg").textContent = "已經複製（已選取文字，㩒 Ctrl+C 亦得）。"; }
+  };
 }
 
 /* ---------- 啟動 ---------- */
