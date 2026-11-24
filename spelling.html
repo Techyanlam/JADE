@@ -363,15 +363,15 @@
     <h1>Jade's Spelling Words 🌟</h1>
     <p class="lede">Every spelling word from September to November — with a picture for each one. Look, say it, spell it!</p>
     <div class="hero-stats">
-      <span><b>125</b> word cards</span>
-      <span><b>35</b> school days</span>
-      <span>14 Sep – 12 Nov 2026</span>
+      <span><b>142</b> word cards</span>
+      <span><b>41</b> school days</span>
+      <span>14 Sep – 24 Nov 2026</span>
     </div>
   </header>
 
   <div class="parent-note" role="note">
     <strong>For parents:</strong> cards are grouped by the day each word was given, and every card carries its date.
-    Two things from the original list to check: the 10/11 word is printed as <span class="flag">“status”</span> (shown with a statue picture — it may be <em>statue</em>), and the group written “26/20” is filed under <strong>26/10</strong>.
+    One thing from the original list to check: the group written “26/20” is filed under <strong>26/10</strong>.
     <span class="no-print">Tap the <strong>speaker button</strong> on any card to hear the word read aloud — it works in <strong>Hide the words</strong> mode too, so Jade can listen, spell, then tap <strong>Peek</strong> to check. In Hide mode she can also <strong>type the word</strong> in the box and tap <strong>Check</strong> to see if she got it right.</span>
   </div>
 
@@ -402,7 +402,7 @@
   </div>
 
   <footer>
-    Jade's English spelling · Full revision list, 14 September – 12 November 2026<br />
+    Jade's English spelling · Full revision list, 14 September – 24 November 2026<br />
     Words marked with a pair (like leaf / leaves) share one card.
   </footer>
 </div>
@@ -532,15 +532,32 @@ var DATA = [
   ["9/11","nov","Monday","pass the parcel","pass the parcel","","🎁"],
   ["9/11","nov","Monday","treasure hunt","treasure hunt","","🗺️"],
   ["10/11","nov","Tuesday","musical chairs","musical chairs","","🪑"],
-  ["10/11","nov","Tuesday","status","status","as written in the list — may be “statue”","🗽"],
+  ["10/11","nov","Tuesday","statue","statue","","🗽"],
   ["10/11","nov","Tuesday","apple bobbing","apple bobbing","","🍎"],
   ["11/11","nov","Wednesday","pin","pin","","📌"],
   ["11/11","nov","Wednesday","tail","tail","","🐈"],
   ["11/11","nov","Wednesday","Donkeys","Donkeys","","🫏"],
+  ["12/11","nov","Thursday","father","father","","👨"],
+  ["12/11","nov","Thursday","mother","mother","","👩"],
   ["12/11","nov","Thursday","brother","brother","","👦"],
   ["12/11","nov","Thursday","sister","sister","","👧"],
-  ["12/11","nov","Thursday","father","father","","👨"],
-  ["12/11","nov","Thursday","mother","mother","","👩"]
+  ["17/11","nov","Tuesday","branches","branches","","🌿"],
+  ["17/11","nov","Tuesday","roots","roots","","🌱"],
+  ["17/11","nov","Tuesday","trunks","trunks","","🌳"],
+  ["18/11","nov","Wednesday","stem / stems","stem","singular → plural (+s)","🪴"],
+  ["18/11","nov","Wednesday","soil","soil","","🟫"],
+  ["18/11","nov","Wednesday","petal / petals","petal","singular → plural (+s)","🌸"],
+  ["19/11","nov","Thursday","flower / flowers","flower","singular → plural (+s)","🌻"],
+  ["19/11","nov","Thursday","bud / buds","bud","singular → plural (+s)","🌱"],
+  ["19/11","nov","Thursday","plant pot / plant pots","plant pot","singular → plural (+s)","🪴"],
+  ["20/11","nov","Friday","watering can / watering cans","watering can","singular → plural (+s)","🚿"],
+  ["20/11","nov","Friday","table / tables","table","singular → plural (+s)","🍽️"],
+  ["23/11","nov","Monday","orange / oranges","orange","singular → plural (+s)","🍊"],
+  ["23/11","nov","Monday","grape / grapes","grape","singular → plural (+s)","🍇"],
+  ["23/11","nov","Monday","mango / mangoes","mango","singular → plural (+es)","🥭"],
+  ["24/11","nov","Tuesday","squirrel / squirrels","squirrel","singular → plural (+s)","🐿️"],
+  ["24/11","nov","Tuesday","koala / koalas","koala","singular → plural (+s)","🐨"],
+  ["24/11","nov","Tuesday","racoon / racoons","racoon","singular → plural (+s)","🦝"]
 ];
 
 var MONTH_LABEL = { sep:"September 2026", oct:"October 2026", nov:"November 2026" };
@@ -757,9 +774,9 @@ function applyFilters(){
   });
   emptyState.style.display = shownCards ? "none" : "block";
   if(state.month==="all" && state.date==="all" && !state.q){
-    resultLine.innerHTML = "Showing all <b>125 word cards</b> · 35 days";
+    resultLine.innerHTML = "Showing all <b>142 word cards</b> · 41 days";
   } else {
-    resultLine.innerHTML = "Showing <b>"+shownCards+"</b> of 125 word cards";
+    resultLine.innerHTML = "Showing <b>"+shownCards+"</b> of 142 word cards";
   }
 }
 
