@@ -363,9 +363,9 @@
     <h1>Jade's Spelling Words 🌟</h1>
     <p class="lede">Every spelling word from September to November — with a picture for each one. Look, say it, spell it!</p>
     <div class="hero-stats">
-      <span><b>142</b> word cards</span>
-      <span><b>41</b> school days</span>
-      <span>14 Sep – 24 Nov 2026</span>
+      <span><b>145</b> word cards</span>
+      <span><b>42</b> school days</span>
+      <span>14 Sep – 27 Nov 2026</span>
     </div>
   </header>
 
@@ -402,7 +402,7 @@
   </div>
 
   <footer>
-    Jade's English spelling · Full revision list, 14 September – 24 November 2026<br />
+    Jade's English spelling · Full revision list, 14 September – 27 November 2026<br />
     Words marked with a pair (like leaf / leaves) share one card.
   </footer>
 </div>
@@ -557,7 +557,10 @@ var DATA = [
   ["23/11","nov","Monday","mango / mangoes","mango","singular → plural (+es)","🥭"],
   ["24/11","nov","Tuesday","squirrel / squirrels","squirrel","singular → plural (+s)","🐿️"],
   ["24/11","nov","Tuesday","koala / koalas","koala","singular → plural (+s)","🐨"],
-  ["24/11","nov","Tuesday","racoon / racoons","racoon","singular → plural (+s)","🦝"]
+  ["24/11","nov","Tuesday","racoon / racoons","racoon","singular → plural (+s)","🦝"],
+  ["27/11","nov","Friday","look after","look after","","👀"],
+  ["27/11","nov","Friday","bigger","bigger","","📏"],
+  ["27/11","nov","Friday","dry","dry","","☀️"]
 ];
 
 var MONTH_LABEL = { sep:"September 2026", oct:"October 2026", nov:"November 2026" };
@@ -774,9 +777,9 @@ function applyFilters(){
   });
   emptyState.style.display = shownCards ? "none" : "block";
   if(state.month==="all" && state.date==="all" && !state.q){
-    resultLine.innerHTML = "Showing all <b>142 word cards</b> · 41 days";
+    resultLine.innerHTML = "Showing all <b>145 word cards</b> · 42 days";
   } else {
-    resultLine.innerHTML = "Showing <b>"+shownCards+"</b> of 142 word cards";
+    resultLine.innerHTML = "Showing <b>"+shownCards+"</b> of 145 word cards";
   }
 }
 
